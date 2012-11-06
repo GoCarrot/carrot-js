@@ -1,0 +1,15 @@
+{
+    "config" : {
+        "name": "Carrot",
+        "version": "0.0.1",
+        "debug": true,
+        "tests": false
+    },
+    "files" : {
+        "lib/Carrot.js": [
+            "src/hmac-sha256.js",
+            "src/enc-base64-min.js",
+            "src/Carrot.coffee"
+        ]
+    }
+}
