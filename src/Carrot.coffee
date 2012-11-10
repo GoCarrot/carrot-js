@@ -68,7 +68,7 @@ class Carrot
     true
 
   validateUser: (callback) ->
-    @ajaxGet("https://#{@hostname}/games/#{@appId}/users/#{@udid}.json",
+    @ajaxGet("https://#{@hostname}/games/#{@appId}/users.json?id=#{encodeURIComponent(@udid)}",
       (statusCode) =>
         switch statusCode
           when 200
