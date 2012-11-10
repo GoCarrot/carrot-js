@@ -35,7 +35,7 @@ class Carrot
     @udid = udid
     @appSecret = appSecret
     @status = Carrot.Status.Unknown
-    @hostname = hostname or "gocarrot.herokuapp.com"
+    @hostname = hostname or "gocarrot.com"
 
   ajaxGet: (url, callback) ->
     if @request
