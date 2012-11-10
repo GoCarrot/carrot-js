@@ -100,43 +100,29 @@ class Carrot
         callback(@status)  if callback
     )
 
+  callbackHandler: (callback) ->
+    return (statusCode) =>
+      ret = Carrot.Status.Error
+      switch statusCode
+        when 200
+          ret = Carrot.Status.Ok
+        when 201
+          ret = Carrot.Status.Ok
+        when 401
+          @status = Carrot.Status.ReadOnly
+        when 404
+          @status = Carrot.Status.NotAuthorized
+        else
+          @status = Carrot.Status.Unknown
+      callback(ret) if callback
+
   postAchievement: (achievementId, callback) ->
     @postSignedRequest("/me/achievements.json",
-      {'achievement_id': achievementId},
-      (statusCode) =>
-        ret = Carrot.Status.Error
-        switch statusCode
-          when 200
-            ret = Carrot.Status.Ok
-          when 201
-            ret = Carrot.Status.Ok
-          when 401
-            @status = Carrot.Status.ReadOnly
-          when 404
-            @status = Carrot.Status.NotAuthorized
-          else
-            @status = Carrot.Status.Unknown
-        callback(ret) if callback
-    )
+      {'achievement_id': achievementId}, @callbackHandler(callback))
 
   postHighScore: (score, leaderboardId, callback) ->
     @postSignedRequest("/me/scores.json",
-      {'value': score, 'leaderboard_id': leaderboardId | ""},
-      (statusCode) =>
-        ret = Carrot.Status.Error
-        switch statusCode
-          when 200
-            ret = Carrot.Status.Ok
-          when 201
-            ret = Carrot.Status.Ok
-          when 401
-            @status = Carrot.Status.ReadOnly
-          when 404
-            @status = Carrot.Status.NotAuthorized
-          else
-            @status = Carrot.Status.Unknown
-        callback(ret) if callback
-    )
+      {'value': score, 'leaderboard_id': leaderboardId | ""}, @callbackHandler(callback))
 
   postAction: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
     actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
@@ -147,22 +133,7 @@ class Carrot
       'object_properties': objectProperties
     }
     params['object_instance_id'] = objectInstanceId if objectInstanceId
-    @postSignedRequest("/me/actions.json", params,
-      (statusCode) =>
-        ret = Carrot.Status.Error
-        switch statusCode
-          when 200
-            ret = Carrot.Status.Ok
-          when 201
-            ret = Carrot.Status.Ok
-          when 401
-            @status = Carrot.Status.ReadOnly
-          when 404
-            @status = Carrot.Status.NotAuthorized
-          else
-            @status = Carrot.Status.Unknown
-        callback(ret) if callback
-    )
+    @postSignedRequest("/me/actions.json", params, @callbackHandler(callback))
 
   postSignedRequest: (endpoint, query_params, callback) ->
     url_params = {
