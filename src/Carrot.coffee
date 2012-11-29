@@ -93,7 +93,7 @@ class Carrot
             @status = Carrot.Status.Authorized
           when 401
             @status = Carrot.Status.ReadOnly
-          when 404
+          when 405
             @status = Carrot.Status.NotAuthorized
           else
             @status = Carrot.Status.Unknown
@@ -111,6 +111,8 @@ class Carrot
         when 401
           @status = Carrot.Status.ReadOnly
         when 404
+          # No change to status, resource not found
+        when 405
           @status = Carrot.Status.NotAuthorized
         else
           @status = Carrot.Status.Unknown
