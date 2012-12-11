@@ -36,6 +36,7 @@ class Carrot
     @appSecret = appSecret
     @status = Carrot.Status.Unknown
     @hostname = hostname or "gocarrot.com"
+    @scheme = ("http" if hostname?.match(/^localhost/)) or "https"
 
   ajaxGet: (url, callback) ->
     if @request
@@ -68,7 +69,7 @@ class Carrot
     true
 
   validateUser: (callback) ->
-    @ajaxGet("https://#{@hostname}/games/#{@appId}/users.json?id=#{encodeURIComponent(@udid)}",
+    @ajaxGet("#{@scheme}://#{@hostname}/games/#{@appId}/users.json?id=#{encodeURIComponent(@udid)}",
       (statusCode) =>
         switch statusCode
           when 200
@@ -85,7 +86,7 @@ class Carrot
     )
 
   createUser: (accessToken, callback) ->
-    @ajaxPost("https://#{@hostname}/games/#{@appId}/users.json",
+    @ajaxPost("#{@scheme}://#{@hostname}/games/#{@appId}/users.json",
       {'access_token': accessToken, 'api_key': @udid},
       (statusCode) =>
         switch statusCode
@@ -153,11 +154,11 @@ class Carrot
       url_string = url_string + "#{k}=#{url_params[k]}&"
     url_string = url_string.slice(0, url_string.length - 1);
 
-    sign_string = "POST\n#{@hostname}\n#{endpoint}\n#{url_string}"
+    sign_string = "POST\n#{@hostname.split(':')[0]}\n#{endpoint}\n#{url_string}"
     digest = CryptoJS.HmacSHA256(sign_string, @appSecret).toString(CryptoJS.enc.Base64)
     url_params.sig = digest
 
-    @ajaxPost("https://#{@hostname}#{endpoint}", url_params, callback)
+    @ajaxPost("#{@scheme}://#{@hostname}#{endpoint}", url_params, callback)
 
   GUID: ->
     S4 = () => return Math.floor(Math.random() * 0x10000).toString(16)
