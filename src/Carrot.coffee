@@ -49,7 +49,7 @@ class Carrot
         async: true
         url: url
         complete: (jqXHR, textStatus) =>
-          callback(jqXHR.status) if callback
+          callback(jqXHR) if callback
     true
 
   ajaxPost: (url, data, callback) ->
@@ -65,13 +65,13 @@ class Carrot
         data: data
         url: url
         complete: (jqXHR, textStatus) =>
-          callback(jqXHR.status) if callback
+          callback(jqXHR) if callback
     true
 
   validateUser: (callback) ->
     @ajaxGet("#{@scheme}://#{@hostname}/games/#{@appId}/users.json?id=#{encodeURIComponent(@udid)}",
-      (statusCode) =>
-        switch statusCode
+      (jqXHR) =>
+        switch jqXHR.status
           when 200
             @status = Carrot.Status.Authorized
           when 401
@@ -102,9 +102,9 @@ class Carrot
     )
 
   callbackHandler: (callback) ->
-    return (statusCode) =>
+    return (jqXHR) =>
       ret = Carrot.Status.Error
-      switch statusCode
+      switch jqXHR.status
         when 200
           ret = Carrot.Status.Ok
         when 201
@@ -113,11 +113,15 @@ class Carrot
           @status = Carrot.Status.ReadOnly
         when 404
           # No change to status, resource not found
+          @status = @status
         when 405
           @status = Carrot.Status.NotAuthorized
         else
           @status = Carrot.Status.Unknown
-      callback(ret) if callback
+      if callback
+        return callback(ret)
+      else
+        return ret
 
   postAchievement: (achievementId, callback) ->
     @postSignedRequest("/me/achievements.json",
