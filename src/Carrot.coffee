@@ -68,24 +68,7 @@ class Carrot
           callback(jqXHR) if callback
     true
 
-  validateUser: (callback) ->
-    @ajaxGet("#{@scheme}://#{@hostname}/games/#{@appId}/users.json?id=#{encodeURIComponent(@udid)}",
-      (jqXHR) =>
-        switch jqXHR.status
-          when 200
-            @status = Carrot.Status.Authorized
-          when 401
-            @status = Carrot.Status.ReadOnly
-          when 403
-            @status = Carrot.Status.NotAuthorized
-          when 404
-            @status = Carrot.Status.NotCreated
-          else
-            @status = Carrot.Status.Unknown
-        callback(@status) if callback
-    )
-
-  createUser: (accessToken, callback) ->
+  validateUser: (accessToken, callback) ->
     @ajaxPost("#{@scheme}://#{@hostname}/games/#{@appId}/users.json",
       {'access_token': accessToken, 'api_key': @udid},
       (statusCode) =>
