@@ -71,8 +71,8 @@ class Carrot
   validateUser: (accessToken, callback) ->
     @ajaxPost("#{@scheme}://#{@hostname}/games/#{@appId}/users.json",
       {'access_token': accessToken, 'api_key': @udid},
-      (statusCode) =>
-        switch statusCode
+      (jqXHR) =>
+        switch jqXHR.status
           when 201
             @status = Carrot.Status.Authorized
           when 401
