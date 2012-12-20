@@ -110,11 +110,12 @@ class Carrot
     @postSignedRequest("/me/achievements.json",
       {'achievement_id': achievementId}, @callbackHandler(callback))
 
-  postHighScore: (score, leaderboardId, callback) ->
+  postHighScore: (score, callback) ->
     @postSignedRequest("/me/scores.json",
-      {'value': score, 'leaderboard_id': leaderboardId | ""}, @callbackHandler(callback))
+      {'value': score}, @callbackHandler(callback))
 
   postAction: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
+    # TODO: Error checking for required properties
     actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
     objectProperties = if typeof objectProperties is "string" then objectProperties else JSON.stringify(objectProperties || {})
     params = {
