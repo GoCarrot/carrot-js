@@ -8,10 +8,6 @@ var app = express();
 
 app.get('/', function(request, response) {
   response.sendfile("./lib/Carrot.js");
-  // response.set('Content-Type', 'application/javascript');
-  // fs.readFile('./lib/Carrot.js', function(err, data) {
-  //   response.send(data);
-  // });
 });
 
 var port = process.env.PORT || 5000;
