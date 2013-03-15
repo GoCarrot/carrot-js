@@ -71,7 +71,7 @@ class Carrot
   validateUser: (accessToken, callback) ->
     query = window?.document?.location?.search?.substr 1
     @ajaxPost("#{@scheme}://#{@hostname}/games/#{@appId}/users.json",
-      {'access_token': accessToken, 'api_key': @udid, 'query' : querystring},
+      {'access_token': accessToken, 'api_key': @udid, 'query' : query},
       (jqXHR) =>
         switch jqXHR.status
           when 201
