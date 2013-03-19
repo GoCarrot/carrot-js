@@ -26,6 +26,9 @@ class Carrot
     Ok: 'Operation successful.'
     Error: 'Operation unsuccessful.'
 
+  @trackLoad: () ->
+    console.log("Loaded Carrot");
+
   constructor: (appId, udid, appSecret, hostname) ->
     try
       @request = require('request')
@@ -161,3 +164,4 @@ class Carrot
     );
 
 (exports ? this).Carrot = Carrot
+Carrot.trackLoad();
