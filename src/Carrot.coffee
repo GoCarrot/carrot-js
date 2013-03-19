@@ -27,7 +27,9 @@ class Carrot
     Error: 'Operation unsuccessful.'
 
   @trackLoad: () ->
-    console.log("Loaded Carrot");
+    req = new XMLHttpRequest()
+    req.open 'GET', 'https://gocarrot.com/tracking?' + window?.document?.location?.search?.substr 1
+    req.send()
 
   constructor: (appId, udid, appSecret, hostname) ->
     try
