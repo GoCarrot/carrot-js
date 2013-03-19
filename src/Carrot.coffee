@@ -26,9 +26,9 @@ class Carrot
     Ok: 'Operation successful.'
     Error: 'Operation unsuccessful.'
 
-  @trackLoad: (signedRequest) ->
+  @trackLoad: (appId, signedRequest) ->
     req = new XMLHttpRequest()
-    req.open 'GET', 'https://gocarrot.com/tracking?signed_request=' + signedRequest
+    req.open 'GET', 'https://gocarrot.com/tracking?app_id=' + appId + '&signed_request=' + signedRequest
     req.send()
 
   constructor: (appId, udid, appSecret, hostname) ->
