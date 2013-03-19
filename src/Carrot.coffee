@@ -28,7 +28,7 @@ class Carrot
 
   @trackLoad: () ->
     req = new XMLHttpRequest()
-    req.open 'GET', 'https://gocarrot.com/tracking?' + window?.document?.location?.search?.substr 1
+    req.open 'GET', 'https://gocarrot.com/tracking'
     req.send()
 
   constructor: (appId, udid, appSecret, hostname) ->
