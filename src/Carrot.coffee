@@ -28,7 +28,7 @@ class Carrot
 
   @trackLoad: (signedRequest) ->
     req = new XMLHttpRequest()
-    req.open 'GET', 'https://gocarrot.com/tracking?signed_request=' + signed_request
+    req.open 'GET', 'https://gocarrot.com/tracking?signed_request=' + signedRequest
     req.send()
 
   constructor: (appId, udid, appSecret, hostname) ->
