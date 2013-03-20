@@ -27,9 +27,8 @@ class Carrot
     Error: 'Operation unsuccessful.'
 
   @trackLoad: (appId, signedRequest) ->
-    req = new XMLHttpRequest()
-    req.open 'GET', 'https://gocarrot.com/tracking?app_id=' + appId + '&signed_request=' + signedRequest
-    req.send()
+    img = new Image()
+    img.src = 'https://gocarrot.com/tracking?app_id=' + appId + '&signed_request=' + signedRequest
 
   constructor: (appId, udid, appSecret, hostname) ->
     try
