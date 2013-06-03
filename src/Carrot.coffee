@@ -119,7 +119,6 @@ class Carrot
       {'value': score}, @callbackHandler(callback))
 
   postAction: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
-    # TODO: Error checking for required properties
     actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
     objectProperties = if typeof objectProperties is "string" then objectProperties else JSON.stringify(objectProperties || {})
     params = {
@@ -130,7 +129,25 @@ class Carrot
     params['object_instance_id'] = objectInstanceId if objectInstanceId
     @postSignedRequest("/me/actions.json", params, @callbackHandler(callback))
 
+  getTweet: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
+    actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
+    objectProperties = if typeof objectProperties is "string" then objectProperties else JSON.stringify(objectProperties || {})
+    params = {
+      'action_id': actionId,
+      'action_properties': actionProperties,
+      'object_properties': objectProperties
+    }
+    params['object_instance_id'] = objectInstanceId if objectInstanceId
+    @getSignedRequest("/me/tweet.json", params, (jqXHR) -> callback(jqXHR.responseJSON) if callback)
+
+  getSignedRequest: (endpoint, query_params, callback) ->
+    query_params['_method'] = "GET"
+    @doSignedRequest(endpoint, query_params, callback)
+
   postSignedRequest: (endpoint, query_params, callback) ->
+    @doSignedRequest(endpoint, query_params, callback)
+
+  doSignedRequest: (endpoint, query_params, callback) ->
     url_params = {
       'api_key': @udid,
       'game_id': @appId,
