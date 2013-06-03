@@ -140,6 +140,17 @@ class Carrot
     params['object_instance_id'] = objectInstanceId if objectInstanceId
     @getSignedRequest("/me/tweet.json", params, (jqXHR) -> callback(jqXHR.responseJSON) if callback)
 
+  showTweet: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
+    @getTweet actionId, objectInstanceId, actionProperties, objectProperties, (reply) ->
+      callback(reply) if callback
+      if reply
+        width = 512
+        height = 258
+        leftPosition = (window.screen.width / 2) - ((width / 2))
+        topPosition = (window.screen.height / 2) - ((height / 2))
+        url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(reply.tweet.contents) + "&url=" + encodeURIComponent(reply.tweet.short_url)
+        window.open(url, "Twitter", "status=no,height=" + height + ",width=" + width + ",resizable=no,left=" + leftPosition + ",top=" + topPosition + ",screenX=" + leftPosition + ",screenY=" + topPosition + ",toolbar=no,menubar=no,scrollbars=no,location=yes,directories=no,dialog=yes")
+
   getSignedRequest: (endpoint, query_params, callback) ->
     query_params['_method'] = "GET"
     @doSignedRequest(endpoint, query_params, callback)
