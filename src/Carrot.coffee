@@ -76,11 +76,14 @@ class Carrot
     @ajaxPost("#{@scheme}://#{@hostname}/games/#{@appId}/users.json",
       {'access_token': accessToken, 'api_key': @udid},
       (jqXHR) =>
+        response = $.parseJSON(jqXHR.responseText);
         switch jqXHR.status
           when 201
             @status = Carrot.Status.Authorized
+            @userId = response.facebook_id
           when 401
             @status = Carrot.Status.ReadOnly
+            @userId = response.facebook_id
           when 405
             @status = Carrot.Status.NotAuthorized
           else
