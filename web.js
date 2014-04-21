@@ -6,11 +6,11 @@ exec('cake build');
 
 var app = express();
 
-app.get('/', function(request, response) {
+app.get('/Carrot.js', function(request, response) {
   response.sendfile("./lib/Carrot.js");
 });
 
-app.get('/test.html', function(request, response) {
+app.get('/', function(request, response) {
   response.sendfile("./test.html");
 });
 
