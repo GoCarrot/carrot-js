@@ -6,7 +6,7 @@ exec('cake build');
 
 var app = express();
 
-app.get('/Carrot.js', function(request, response) {
+app.get('/', function(request, response) {
   response.sendfile("./lib/Carrot.js");
 });
 
