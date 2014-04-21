@@ -10,7 +10,7 @@ app.get('/Carrot.js', function(request, response) {
   response.sendfile("./lib/Carrot.js");
 });
 
-app.get('/', function(request, response) {
+app.post('/', function(request, response) {
   response.sendfile("./test.html");
 });
 
