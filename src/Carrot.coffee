@@ -132,6 +132,36 @@ class Carrot
     params['object_instance_id'] = objectInstanceId if objectInstanceId
     @postSignedRequest("/me/actions.json", params, @callbackHandler(callback))
 
+  popupFeedPost: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
+    if FB?
+      actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
+      objectProperties = if typeof objectProperties is "string" then objectProperties else JSON.stringify(objectProperties || {})
+      params = {
+        'action_id': actionId,
+        'action_properties': actionProperties,
+        'object_properties': objectProperties
+      }
+      params['object_instance_id'] = objectInstanceId if objectInstanceId
+      @getSignedRequest("/me/tweet.json", params, (jqXHR) =>
+        FB.ui({
+            method: 'feed',
+            name: 'Facebook Dialogs',
+            link: 'https://developers.facebook.com/docs/dialogs/',
+            picture: 'http://fbrell.com/f8.jpg',
+            caption: 'Reference Documentation',
+            description: 'Dialogs provide a simple, consistent interface for applications to interface with users.'
+          },
+          (response) ->
+            if response and response.post_id
+              alert 'Post was published.'
+            else
+              alert 'Post was not published.'
+
+            callback(jqXHR.responseJSON) if callback
+        )
+      )
+
+
   getTweet: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
     actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
     objectProperties = if typeof objectProperties is "string" then objectProperties else JSON.stringify(objectProperties || {})
