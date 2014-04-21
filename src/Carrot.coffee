@@ -142,7 +142,7 @@ class Carrot
         'object_properties': objectProperties
       }
       params['object_instance_id'] = objectInstanceId if objectInstanceId
-      @getSignedRequest("/me/tweet.json", params, (jqXHR) =>
+      @getSignedRequest("/me/template_post.json", params, (jqXHR) =>
         FB.ui({
             method: 'feed',
             name: 'Facebook Dialogs',
@@ -171,7 +171,7 @@ class Carrot
       'object_properties': objectProperties
     }
     params['object_instance_id'] = objectInstanceId if objectInstanceId
-    @getSignedRequest("/me/tweet.json", params, (jqXHR) -> callback(jqXHR.responseJSON) if callback)
+    @getSignedRequest("/me/template_post.json", params, (jqXHR) -> callback(jqXHR.responseJSON) if callback)
 
   showTweet: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
     @getTweet actionId, objectInstanceId, actionProperties, objectProperties, (reply) ->
