@@ -143,7 +143,7 @@ class Carrot
       }
       params['object_instance_id'] = objectInstanceId if objectInstanceId
       @postSignedRequest("/me/feed_post.json", params, (jqXHR) =>
-        FB.ui(jqXHR.response.fb_data,
+        FB.ui(jqXHR.responseJSON.fb_data,
           (response) ->
             if response and response.post_id
               alert 'Post was published.'
