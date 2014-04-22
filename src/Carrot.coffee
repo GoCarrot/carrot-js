@@ -146,9 +146,7 @@ class Carrot
         FB.ui(jqXHR.responseJSON.fb_data,
           (response) ->
             if response and response.post_id
-              alert 'Post was published.'
-            else
-              alert 'Post was not published.'
+              @ajaxPost("#{@scheme}://parsnip.gocarrot.com/feed_dialog_post", {platform_id: jqXHR.responseJSON.post_id})
 
             callback(jqXHR.responseJSON) if callback
         )
