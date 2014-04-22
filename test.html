@@ -9,9 +9,13 @@
       status     : true,
       xfbml      : true
     });
-    var carrot = new Carrot("1427358100847150", "foo", "1d453d6aeed727093a71e0520a308dbb");
-    carrot.hostname = "beta.gocarrot.com";
-    carrot.popupFeedPost(null, "test", null, null, function(success) {console.log(success)});
+    FB.getLoginStatus(function(response) {
+      var carrot = new Carrot("1427358100847150", response.authResonse.userID, "1d453d6aeed727093a71e0520a308dbb");
+      carrot.hostname = "beta.gocarrot.com";
+      carrot.validateUser(response.authResponse.accessToken);
+      carrot.popupFeedPost(null, "test", null, null, function(success) {console.log(success)});
+    })
+
   };
 
   (function(d, s, id){
