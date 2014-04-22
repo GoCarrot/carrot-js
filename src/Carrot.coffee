@@ -142,15 +142,8 @@ class Carrot
         'object_properties': objectProperties
       }
       params['object_instance_id'] = objectInstanceId if objectInstanceId
-      @getSignedRequest("/me/template_post.json", params, (jqXHR) =>
-        FB.ui({
-            method: 'feed',
-            name: 'Facebook Dialogs',
-            link: 'https://developers.facebook.com/docs/dialogs/',
-            picture: 'http://fbrell.com/f8.jpg',
-            caption: 'Reference Documentation',
-            description: 'Dialogs provide a simple, consistent interface for applications to interface with users.'
-          },
+      @getSignedRequest("/me/feed_post.json", params, (jqXHR) =>
+        FB.ui(jqXHR.response.fb_data,
           (response) ->
             if response and response.post_id
               alert 'Post was published.'
