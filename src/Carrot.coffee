@@ -59,7 +59,7 @@ class Carrot
   ajaxPost: (url, data, callback) ->
     if @request
         @request.post(url, {'form':data}, (error, response, body) =>
-          callback(response.statusCode) if callback
+          callback(response.statusCode, response.responseJSON) if callback
           response.end
         )
     else
