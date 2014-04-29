@@ -132,8 +132,11 @@ class Carrot
     params['object_instance_id'] = objectInstanceId if objectInstanceId
     @postSignedRequest("/me/actions.json", params, @callbackHandler(callback))
 
-  popupFeedPost: (objectInstanceId, objectProperties, callback) ->
-    if FB?
+  popupFeedPost: (objectInstanceId, objectProperties, callback, postMethod) ->
+    if !postMethod? && FB?
+      postMethod = FB.ui
+
+    if postMethod?
       actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
       objectProperties = if typeof objectProperties is "string" then objectProperties else JSON.stringify(objectProperties || {})
       params = {
@@ -142,7 +145,7 @@ class Carrot
       params['object_instance_id'] = objectInstanceId if objectInstanceId
       @postSignedRequest("/me/feed_post.json", params, (jqXHR) =>
         carrotResponse = $.parseJSON(jqXHR.responseText)
-        FB.ui(carrotResponse.fb_data,
+        postMethod(carrotResponse.fb_data,
           (fbResponse) =>
             if fbResponse and fbResponse.post_id
               @ajaxPost("#{@scheme}://parsnip.gocarrot.com/feed_dialog_post", {platform_id: carrotResponse.post_id})
