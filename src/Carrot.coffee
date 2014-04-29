@@ -141,12 +141,13 @@ class Carrot
       }
       params['object_instance_id'] = objectInstanceId if objectInstanceId
       @postSignedRequest("/me/feed_post.json", params, (jqXHR) =>
-        FB.ui(jqXHR.responseJSON.fb_data,
-          (response) =>
-            if response and response.post_id
-              @ajaxPost("#{@scheme}://parsnip.gocarrot.com/feed_dialog_post", {platform_id: jqXHR.responseJSON.post_id})
+        carrotResponse = $.parseJSON(jqXHR.responseText)
+        FB.ui(carrotResponse.fb_data,
+          (fbResponse) =>
+            if fbResponse and fbResponse.post_id
+              @ajaxPost("#{@scheme}://parsnip.gocarrot.com/feed_dialog_post", {platform_id: carrotResponse.post_id})
 
-            callback(jqXHR.responseJSON) if callback
+            callback(carrotResponse, fbResponse) if callback
         )
       )
 
