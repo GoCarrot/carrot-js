@@ -132,13 +132,11 @@ class Carrot
     params['object_instance_id'] = objectInstanceId if objectInstanceId
     @postSignedRequest("/me/actions.json", params, @callbackHandler(callback))
 
-  popupFeedPost: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
+  popupFeedPost: (objectInstanceId, objectProperties, callback) ->
     if FB?
       actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
       objectProperties = if typeof objectProperties is "string" then objectProperties else JSON.stringify(objectProperties || {})
       params = {
-        'action_id': actionId,
-        'action_properties': actionProperties,
         'object_properties': objectProperties
       }
       params['object_instance_id'] = objectInstanceId if objectInstanceId
