@@ -163,7 +163,7 @@ class Carrot
       'object_properties': objectProperties
     }
     params['object_instance_id'] = objectInstanceId if objectInstanceId
-    @getSignedRequest("/me/template_post.json", params, (jqXHR) -> callback(jqXHR.responseJSON) if callback)
+    @getSignedRequest("/me/template_post.json", params, (jqXHR) -> callback($.parseJSON(jqXHR.responseText)) if callback)
 
   showTweet: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
     @getTweet actionId, objectInstanceId, actionProperties, objectProperties, (reply) ->
