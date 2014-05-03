@@ -171,7 +171,6 @@ class Carrot
         'object_type' : opts['object_type']
         'object_instance_id' : opts['object_id']
       }
-      $.extend(params, opts)
       @postSignedRequest("/me/request.json", params, (jqXHR) =>
         carrotResponse = $.parseJSON(jqXHR.responseText)
         postMethod(carrotResponse.fb_data,
@@ -180,7 +179,7 @@ class Carrot
               for receivingUser in fbResponse.to
                 @ajaxPost("#{@scheme}://parsnip.gocarrot.com/request_send", {platform_id: carrotResponse.request_id, posting_user_id: @udid, user_id: receivingUser})
 
-            callback(carrotResopnse, fbResponse) if callback
+            callback(carrotResponse, fbResponse) if callback
         )
       )
 
