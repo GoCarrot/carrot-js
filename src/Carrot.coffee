@@ -157,6 +157,33 @@ class Carrot
   reportFeedClick: (postId, callback) ->
     @ajaxPost("#{@scheme}://posts.gocarrot.com/#{postId}/clicks", {clicking_user_id: @udid, sig: "s"}, callback)
 
+  # Available opts: object_type, object_id, filters, suggestions, exclude_ids, max_recipients, data
+  sendRequest: (requestId, opts, callback, postMethod) ->
+    if !postMethod? && FB?
+      postMethod = FB.ui
+
+    if !opts
+      opts = {}
+
+    if postMethod?
+      params = {
+        'request_id' : requestId
+        'object_type' : opts['object_type']
+        'object_instance_id' : opts['object_id']
+      }
+      $.extend(params, opts)
+      @postSignedRequest("/me/request.json", params, (jqXHR) =>
+        carrotResponse = $.parseJSON(jqXRH.responseText)
+        postMethod(carrotResponse.fb_data,
+          (fbResponse) =>
+            if fbResponse
+              for receivingUser in fbResponse.to
+                @ajaxPost("#{@scheme}://parsnip.gocarrot.com/request_send", {platform_id: carrotResponse.request_id, posting_user_id: @udid, user_id: receivingUser})
+
+            callback(carrotResopnse, fbResponse) if callback
+        )
+      )
+
   getTweet: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
     actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
     objectProperties = if typeof objectProperties is "string" then objectProperties else JSON.stringify(objectProperties || {})
