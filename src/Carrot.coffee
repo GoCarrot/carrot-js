@@ -173,7 +173,7 @@ class Carrot
       }
       $.extend(params, opts)
       @postSignedRequest("/me/request.json", params, (jqXHR) =>
-        carrotResponse = $.parseJSON(jqXRH.responseText)
+        carrotResponse = $.parseJSON(jqXHR.responseText)
         postMethod(carrotResponse.fb_data,
           (fbResponse) =>
             if fbResponse
