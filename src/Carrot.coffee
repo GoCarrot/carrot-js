@@ -176,6 +176,7 @@ class Carrot
         postMethod(carrotResponse.fb_data,
           (fbResponse) =>
             if fbResponse
+              @ajaxPost("#{@scheme}://posts.gocarrot.com/#{carrotResponse.request_id}/ids", {platform_id: fbResponse.request})
               for receivingUser in fbResponse.to
                 @ajaxPost("#{@scheme}://parsnip.gocarrot.com/request_send", {platform_id: carrotResponse.request_id, posting_user_id: @udid, user_id: receivingUser})
 
