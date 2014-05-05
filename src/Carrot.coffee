@@ -184,6 +184,9 @@ class Carrot
         )
       )
 
+  acceptRequest: (requestId, callback) ->
+    @ajaxPost("#{@scheme}://posts.gocarrot.com/#{postId}/clicks", {clicking_user_id: @udid, sig: "s"}, callback)
+
   getTweet: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
     actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
     objectProperties = if typeof objectProperties is "string" then objectProperties else JSON.stringify(objectProperties || {})
