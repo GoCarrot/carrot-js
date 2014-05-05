@@ -173,7 +173,8 @@ class Carrot
       }
       @postSignedRequest("/me/request.json", params, (jqXHR) =>
         carrotResponse = $.parseJSON(jqXHR.responseText)
-        postMethod(carrotResponse.fb_data,
+        fb_data = $.extend({}, response.fb_data, opts)
+        postMethod(fb_data,
           (fbResponse) =>
             if fbResponse
               @ajaxPost("#{@scheme}://posts.gocarrot.com/#{carrotResponse.request_id}/ids", {platform_id: fbResponse.request})
