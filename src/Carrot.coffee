@@ -157,7 +157,7 @@ class Carrot
   reportFeedClick: (postId, callback) ->
     @ajaxPost("#{@scheme}://posts.gocarrot.com/#{postId}/clicks", {clicking_user_id: @udid, sig: "s"}, callback)
 
-  # Available opts: object_type, object_id, filters, suggestions, exclude_ids, max_recipients, data
+  # Available opts: object_type, object_id, object_properties, filters, suggestions, exclude_ids, max_recipients, data
   sendRequest: (requestId, opts, callback, postMethod) ->
     if !postMethod? && FB?
       postMethod = FB.ui
@@ -170,6 +170,7 @@ class Carrot
         'request_id' : requestId
         'object_type' : opts['object_type']
         'object_instance_id' : opts['object_id']
+        'object_properties' : JSON.stringify(opts['object_properties'] || {})
       }
       @postSignedRequest("/me/request.json", params, (jqXHR) =>
         carrotResponse = $.parseJSON(jqXHR.responseText)
