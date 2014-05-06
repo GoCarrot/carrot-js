@@ -178,7 +178,7 @@ class Carrot
         postMethod(fb_data,
           (fbResponse) =>
             if fbResponse
-              @ajaxPost("#{@scheme}://posts.gocarrot.com/#{carrotResponse.request_id}/ids", {platform_id: fbResponse.request})
+              @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{carrotResponse.request_id}/ids", {platform_id: fbResponse.request})
               for receivingUser in fbResponse.to
                 @ajaxPost("#{@scheme}://parsnip.gocarrot.com/request_send", {platform_id: carrotResponse.request_id, posting_user_id: @udid, user_id: receivingUser})
 
@@ -187,7 +187,7 @@ class Carrot
       )
 
   acceptRequest: (requestId, callback) ->
-    @ajaxPost("#{@scheme}://posts.gocarrot.com/#{postId}/clicks", {clicking_user_id: @udid, sig: "s"}, callback)
+    @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{postId}/clicks", {clicking_user_id: @udid, sig: "s"}, callback)
 
   getTweet: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
     actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
