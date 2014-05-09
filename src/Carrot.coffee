@@ -132,6 +132,15 @@ class Carrot
     params['object_instance_id'] = objectInstanceId if objectInstanceId
     @postSignedRequest("/me/actions.json", params, @callbackHandler(callback))
 
+  canMakeFeedPost: (objectInstanceId, callback) ->
+    params = {
+      'object_instance_id': objectInstanceId
+    }
+    @postSignedRequest("/me/can_post.json", params, (jqXHR) =>
+      carrotResponse = $.parseJSON(jqXHR.responseText)
+      callback(carrotResponse.code == 200) if callback
+    )
+
   popupFeedPost: (objectInstanceId, objectProperties, callback, postMethod) ->
     if !postMethod? && FB?
       postMethod = FB.ui
@@ -145,13 +154,16 @@ class Carrot
       params['object_instance_id'] = objectInstanceId if objectInstanceId
       @postSignedRequest("/me/feed_post.json", params, (jqXHR) =>
         carrotResponse = $.parseJSON(jqXHR.responseText)
-        postMethod(carrotResponse.fb_data,
-          (fbResponse) =>
-            if fbResponse and fbResponse.post_id
-              @ajaxPost("#{@scheme}://parsnip.gocarrot.com/feed_dialog_post", {platform_id: carrotResponse.post_id})
+        if carrotResponse.code == 200
+          postMethod(carrotResponse.fb_data,
+            (fbResponse) =>
+              if fbResponse and fbResponse.post_id
+                @ajaxPost("#{@scheme}://parsnip.gocarrot.com/feed_dialog_post", {platform_id: carrotResponse.post_id})
 
-            callback(carrotResponse, fbResponse) if callback
-        )
+              callback(carrotResponse, fbResponse) if callback
+          )
+        else
+          callback(carrotResponse) if callback
       )
 
   reportFeedClick: (postId, callback) ->
