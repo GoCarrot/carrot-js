@@ -166,6 +166,9 @@ class Carrot
           callback(carrotResponse) if callback
       )
 
+  reportNotificationClick: (notifId, callback) ->
+    @ajaxPost("#{@scheme}://parsnip.gocarrot.com/notification_click", {user_id: @udid, platform_id: notifId})
+
   reportFeedClick: (postId, callback) ->
     @ajaxPost("#{@scheme}://posts.gocarrot.com/#{postId}/clicks", {clicking_user_id: @udid, sig: "s"}, callback)
 
