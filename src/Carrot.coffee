@@ -188,10 +188,12 @@ class Carrot
     if postMethod?
       params = {
         'request_id' : requestId
-        'object_type' : opts['object_type']
-        'object_instance_id' : opts['object_id']
         'object_properties' : JSON.stringify(opts['object_properties'] || {})
       }
+      if opts['object_type'] && opts['object_id']
+        params['object_type'] = opts['object_type']
+        params['object_instance_id'] = opts['object_id']
+
       @postSignedRequest("/me/request.json", params, (jqXHR) =>
         carrotResponse = $.parseJSON(jqXHR.responseText)
         fb_data = $.extend({}, opts, carrotResponse.fb_data)
