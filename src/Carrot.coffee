@@ -170,7 +170,12 @@ class Carrot
     @ajaxPost("#{@scheme}://parsnip.gocarrot.com/notification_click", {user_id: @udid, platform_id: notifId})
 
   reportFeedClick: (postId, callback) ->
-    @ajaxPost("#{@scheme}://posts.gocarrot.com/#{postId}/clicks", {clicking_user_id: @udid, sig: "s"}, callback)
+    @ajaxPost("#{@scheme}://posts.gocarrot.com/#{postId}/clicks", {clicking_user_id: @udid, sig: "s"},
+      (response) =>
+        if response.cascade && response.cascade.method == "sendRequest"
+          sendRequest(response.cascade.arguments.request_id, response.cascade.arguments.opts)
+        callback(response) if callback
+    )
 
   # Available opts: object_type, object_id, object_properties, filters, suggestions, exclude_ids, max_recipients, data
   sendRequest: (requestId, opts, callback, postMethod) ->
@@ -202,7 +207,12 @@ class Carrot
       )
 
   acceptRequest: (requestId, callback) ->
-    @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{postId}/clicks", {clicking_user_id: @udid, sig: "s"}, callback)
+    @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{postId}/clicks", {clicking_user_id: @udid, sig: "s"},
+      (response) =>
+        if response.cascade && response.cascade.method == "sendRequest"
+          sendRequest(response.cascade.arguments.request_id, response.cascade.arguments.opts)
+        callback(response) if callback
+    )
 
   getTweet: (actionId, objectInstanceId, actionProperties, objectProperties, callback) ->
     actionProperties = if typeof actionProperties is "string" then actionProperties else JSON.stringify(actionProperties || {})
