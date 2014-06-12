@@ -200,7 +200,7 @@ class Carrot
         fb_data = $.extend({}, opts, carrotResponse.fb_data)
         postMethod(fb_data,
           (fbResponse) =>
-            if fbResponse
+            if fbResponse && fbResponse.request
               @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{carrotResponse.request_id}/ids", {platform_id: fbResponse.request})
               if fbResponse && fbResponse.to
                 for receivingUser in fbResponse.to
