@@ -202,8 +202,9 @@ class Carrot
           (fbResponse) =>
             if fbResponse
               @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{carrotResponse.request_id}/ids", {platform_id: fbResponse.request})
-              for receivingUser in fbResponse.to
-                @ajaxPost("#{@scheme}://parsnip.gocarrot.com/request_send", {platform_id: carrotResponse.request_id, posting_user_id: @udid, user_id: receivingUser})
+              if fbResponse && fbResponse.to
+                for receivingUser in fbResponse.to
+                  @ajaxPost("#{@scheme}://parsnip.gocarrot.com/request_send", {platform_id: carrotResponse.request_id, posting_user_id: @udid, user_id: receivingUser})
 
             callback(carrotResponse, fbResponse) if callback
         )
