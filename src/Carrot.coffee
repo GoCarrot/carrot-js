@@ -172,7 +172,7 @@ class Carrot
   reportFeedClick: (postId, callback) ->
     @ajaxPost("#{@scheme}://posts.gocarrot.com/#{postId}/clicks", {clicking_user_id: @udid, sig: "s"},
       (jqXHR) =>
-        response = $.parseJSON(jqXHR.responseText);
+        response = $.parseJSON(jqXHR.responseText).response;
         if response.cascade && response.cascade.method == "sendRequest"
           @sendRequest(response.cascade.arguments.request_id, response.cascade.arguments.opts)
         callback(response) if callback
@@ -213,7 +213,7 @@ class Carrot
   acceptRequest: (requestId, callback) ->
     @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{requestId}/clicks", {clicking_user_id: @udid, sig: "s"},
       (jqXHR) =>
-        response = $.parseJSON(jqXHR.responseText);
+        response = $.parseJSON(jqXHR.responseText).response;
         if response.cascade && response.cascade.method == "sendRequest"
           @sendRequest(response.cascade.arguments.request_id, response.cascade.arguments.opts)
         callback(response) if callback
