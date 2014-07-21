@@ -24,7 +24,7 @@ resolveSource = (source) ->
   regex = new RegExp('^(' + regex_str + ')$')
   file_path = path.dirname(source)
   files = fs.readdirSync file_path
-  return (path.join(file_path,file) for file in files when file.match regex)  
+  return (path.join(file_path,file) for file in files when file.match regex)
 
 class EzCakeOven
   constructor: (config_file) ->
