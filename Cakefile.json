@@ -10,6 +10,10 @@
             "src/hmac-sha256.js",
             "src/enc-base64-min.js",
             "src/Carrot.coffee"
-        ]
+        ],
+        "lib/teak.js": [
+            "src/hmac-sha256.js",
+            "src/enc-base64-min.js",
+            "src/teak.coffee"]
     }
 }
