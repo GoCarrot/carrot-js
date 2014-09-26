@@ -154,7 +154,7 @@ class Teak
       params['object_instance_id'] = objectInstanceId if objectInstanceId
       @postSignedRequest("/me/feed_post.json", params, (jqXHR) =>
         carrotResponse = $.parseJSON(jqXHR.responseText)
-        @internal_directFeedPost(carrotResponse)
+        @internal_directFeedPost(carrotResponse, callback, postMethod)
       )
 
   internal_directFeedPost: (carrotResponse, callback, postMethod) ->
