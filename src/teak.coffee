@@ -37,6 +37,9 @@ class Teak
     @hostname = hostname or "gocarrot.com"
     @scheme = ("http" if hostname?.match(/^localhost/)) or "https"
 
+  setUdid: (userId) ->
+    @udid = userId
+
   ajaxGet: (url, callback) ->
     if @request
         @request(url, (error, response, body) =>
@@ -151,17 +154,22 @@ class Teak
       params['object_instance_id'] = objectInstanceId if objectInstanceId
       @postSignedRequest("/me/feed_post.json", params, (jqXHR) =>
         carrotResponse = $.parseJSON(jqXHR.responseText)
-        if carrotResponse.code == 200
-          postMethod(carrotResponse.fb_data,
-            (fbResponse) =>
-              if fbResponse and fbResponse.post_id
-                @ajaxPost("#{@scheme}://parsnip.gocarrot.com/feed_dialog_post", {platform_id: carrotResponse.post_id})
-
-              callback(carrotResponse, fbResponse) if callback
-          )
-        else
-          callback(carrotResponse) if callback
+        @internal_directFeedPost(carrotResponse)
       )
+
+  internal_directFeedPost: (carrotResponse, callback, postMethod) ->
+    if !postMethod? && FB?
+      postMethod = FB.ui
+    if carrotResponse.code == 200
+        postMethod(carrotResponse.fb_data,
+          (fbResponse) =>
+            if fbResponse and fbResponse.post_id
+              @ajaxPost("#{@scheme}://parsnip.gocarrot.com/feed_dialog_post", {platform_id: carrotResponse.post_id})
+
+            callback(carrotResponse, fbResponse) if callback
+        )
+      else
+        callback(carrotResponse) if callback
 
   reportNotificationClick: (notifId, callback) ->
     @ajaxPost("#{@scheme}://parsnip.gocarrot.com/notification_click", {user_id: @udid, platform_id: notifId})
