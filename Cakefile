@@ -85,8 +85,7 @@ class EzCakeOven
             all_files.push file_contents
 
         # Build the final master coffee file (so all source files automatically share scope with each other)
-        code = CoffeeScript.compile all_files.join "\n\n"
-        code += js_code
+        code = js_code + CoffeeScript.compile all_files.join "\n\n"
         # Write the javascript version
         this._write_javascript javascript, code
         # If minify then run uglify on the output javascript and produce a .min.js version of the file

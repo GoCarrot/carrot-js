@@ -12,8 +12,9 @@
             "src/Carrot.coffee"
         ],
         "lib/teak.js": [
+            "src/teak.coffee",
             "src/hmac-sha256.js",
-            "src/enc-base64-min.js",
-            "src/teak.coffee"]
+            "src/enc-base64-min.js"
+        ]
     }
 }
