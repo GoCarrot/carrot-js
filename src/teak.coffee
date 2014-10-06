@@ -203,16 +203,7 @@ class Teak
       @postSignedRequest("/me/request.json", params, (jqXHR) =>
         carrotResponse = $.parseJSON(jqXHR.responseText)
         fb_data = $.extend({}, opts, carrotResponse.fb_data)
-        postMethod(fb_data,
-          (fbResponse) =>
-            if fbResponse && fbResponse.request
-              @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{carrotResponse.request_id}/ids", {platform_id: fbResponse.request})
-              if fbResponse && fbResponse.to
-                for receivingUser in fbResponse.to
-                  @ajaxPost("#{@scheme}://parsnip.gocarrot.com/request_send", {platform_id: carrotResponse.request_id, posting_user_id: @udid, user_id: receivingUser})
-
-            callback(carrotResponse, fbResponse) if callback
-        )
+        @internal_directRequest(carrotResponse, callback, postMethod);
       )
 
   internal_directRequest: (carrotResponse, callback, postMethod) ->
