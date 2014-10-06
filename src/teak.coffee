@@ -215,6 +215,23 @@ class Teak
         )
       )
 
+  internal_directRequest: (carrotResponse, callback, postMethod) ->
+    if !postMethod? && FB?
+      postMethod = FB.ui
+    if carrotResponse.code == 200
+        postMethod(carrotResponse.fb_data,
+          (fbResponse) =>
+            @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{carrotResponse.request_id}/ids", {platform_id: fbResponse.request})
+            if fbResponse && fbResponse.to
+              for receivingUser in fbResponse.to
+                @ajaxPost("#{@scheme}://parsnip.gocarrot.com/request_send", {platform_id: carrotResponse.request_id, posting_user_id: @udid, user_id: receivingUser})
+
+            callback(carrotResponse, fbResponse) if callback
+        )
+      else
+        callback(carrotResponse) if callback
+
+
   acceptRequest: (requestId, callback) ->
     @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{requestId}/clicks", {clicking_user_id: @udid, sig: "s"},
       (jqXHR) =>
