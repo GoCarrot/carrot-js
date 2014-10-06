@@ -145,7 +145,7 @@ class Teak
 
   uiCallbackHandler: (callback, carrotResponse, fbResponse) ->
     if typeof(callback) == "function"
-      callback(carrotResonse, fbResponse)
+      callback(carrotResponse, fbResponse)
     else if typeof(callback) == "string" && @getSwf()
       @swfCallback(carrotResponse, fbResponse, callback)
 
