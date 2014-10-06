@@ -147,7 +147,7 @@ class Teak
     if typeof(callback) == "function"
       callback(carrotResonse, fbResponse)
     else if typeof(callback) == "string" && @getSwf()
-      swfCallback(carrotResponse, fbResponse, callback)
+      @swfCallback(carrotResponse, fbResponse, callback)
 
   canMakeFeedPost: (objectInstanceId, callback) ->
     params = {
@@ -155,7 +155,7 @@ class Teak
     }
     @postSignedRequest("/me/can_post.json", params, (jqXHR) =>
       carrotResponse = $.parseJSON(jqXHR.responseText)
-      @uiCallbackHandler(carrotResponse.code == 200)
+      @uiCallbackHandler(callback, carrotResponse.code == 200)
     )
 
   popupFeedPost: (objectInstanceId, objectProperties, callback, postMethod) ->
@@ -183,10 +183,10 @@ class Teak
             if fbResponse and fbResponse.post_id
               @ajaxPost("#{@scheme}://parsnip.gocarrot.com/feed_dialog_post", {platform_id: carrotResponse.post_id})
 
-            @uiCallbackHandler(carrotResponse, fbResponse)
+            @uiCallbackHandler(callback, carrotResponse, fbResponse)
         )
       else
-        @uiCallbackHandler(carrotResponse)
+        @uiCallbackHandler(callback, carrotResponse)
 
   reportNotificationClick: (notifId, callback) ->
     @ajaxPost("#{@scheme}://parsnip.gocarrot.com/notification_click", {user_id: @udid, platform_id: notifId})
@@ -197,7 +197,7 @@ class Teak
         response = $.parseJSON(jqXHR.responseText).response;
         if response.cascade && response.cascade.method == "sendRequest"
           @sendRequest(response.cascade.arguments.request_id, response.cascade.arguments.opts)
-        @uiCallbackHandler(response)
+        @uiCallbackHandler(callback, response)
     )
 
   # Available opts: object_type, object_id, object_properties, filters, suggestions, exclude_ids, max_recipients, data
@@ -234,10 +234,10 @@ class Teak
               for receivingUser in fbResponse.to
                 @ajaxPost("#{@scheme}://parsnip.gocarrot.com/request_send", {platform_id: carrotResponse.request_id, posting_user_id: @udid, user_id: receivingUser})
 
-            @uiCallbackHandler(carrotResponse, fbResponse)
+            @uiCallbackHandler(callback, carrotResponse, fbResponse)
         )
       else
-        @uiCallbackHandler(carrotResponse)
+        @uiCallbackHandler(callback, carrotResponse)
 
 
   acceptRequest: (requestId, callback) ->
@@ -246,7 +246,7 @@ class Teak
         response = $.parseJSON(jqXHR.responseText).response;
         if response.cascade && response.cascade.method == "sendRequest"
           @sendRequest(response.cascade.arguments.request_id, response.cascade.arguments.opts)
-        @uiCallbackHandler(response)
+        @uiCallbackHandler(callback, response)
     )
 
   getSignedRequest: (endpoint, query_params, callback) ->
