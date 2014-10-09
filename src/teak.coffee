@@ -242,7 +242,7 @@ class Teak
 
   sendRequestOfOpporunity: (callback) ->
     if @requestOfOpportunity
-      internal_directRequest(@requestOfOpportunity, callback)
+      @internal_directRequest(@requestOfOpportunity, callback)
     @requestOfOpportunity = undefined
 
   internal_directRequest: (carrotResponse, callback, postMethod) ->
