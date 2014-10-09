@@ -240,7 +240,7 @@ class Teak
         callback(false) if callback
     )
 
-  sendRequestOfOpporunity: (callback) ->
+  sendRequestOfOpportunity: (callback) ->
     if @requestOfOpportunity
       @internal_directRequest(@requestOfOpportunity, callback)
     @requestOfOpportunity = undefined
