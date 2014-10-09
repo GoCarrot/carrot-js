@@ -229,10 +229,11 @@ class Teak
     if carrotResponse.code == 200
         postMethod(carrotResponse.fb_data,
           (fbResponse) =>
-            @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{carrotResponse.request_id}/ids", {platform_id: fbResponse.request})
-            if fbResponse && fbResponse.to
-              for receivingUser in fbResponse.to
-                @ajaxPost("#{@scheme}://parsnip.gocarrot.com/request_send", {platform_id: carrotResponse.request_id, posting_user_id: @udid, user_id: receivingUser})
+            if(fbResponse && fbResponse.request)
+              @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{carrotResponse.request_id}/ids", {platform_id: fbResponse.request})
+              if fbResponse && fbResponse.to
+                for receivingUser in fbResponse.to
+                  @ajaxPost("#{@scheme}://parsnip.gocarrot.com/request_send", {platform_id: carrotResponse.request_id, posting_user_id: @udid, user_id: receivingUser})
 
             @uiCallbackHandler(callback, carrotResponse, fbResponse)
         )
