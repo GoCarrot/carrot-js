@@ -233,12 +233,11 @@ class Teak
 
     @postSignedRequest("/me/request_of_opportunity.json", params, (jqXHR) =>
       carrotResponse = $.parseJSON(jqXHR.responseText)
-      if(carrotResponse.code == 200) {
+      if(carrotResponse.code == 200)
         @requestOfOpportunity = carrotResponse
         callback(true) if callback
-      } else {
+      else
         callback(false) if callback
-      }
     )
 
   sendRequestOfOpporunity: (callback) ->
