@@ -223,6 +223,29 @@ class Teak
         @internal_directRequest(carrotResponse, callback, postMethod);
       )
 
+  hasRequestOfOpportunity: (opts, callback) ->
+    if !opts
+      opts = {}
+
+    params = {
+      'object_properties' : JSON.stringify(opts['object_properties'] || {})
+    }
+
+    @postSignedRequest("/me/request_of_opportunity.json", params, (jqXHR) =>
+      carrotResponse = $.parseJSON(jqXHR.responseText)
+      if(carrotResponse.code == 200) {
+        @requestOfOpportunity = carrotResponse
+        callback(true) if callback
+      } else {
+        callback(false) if callback
+      }
+    )
+
+  sendRequestOfOpporunity: (callback) ->
+    if @requestOfOpportunity
+      internal_directRequest(@requestOfOpportunity, callback)
+    @requestOfOpportunity = undefined
+
   internal_directRequest: (carrotResponse, callback, postMethod) ->
     if !postMethod? && FB?
       postMethod = FB.ui
