@@ -43,13 +43,18 @@ class Teak
   setSWFObjectID: (objectId) ->
     @swfObjectID = objectId
 
+  setIsUnity: () ->
+    @isUnity = true;
+
   getSwf: () ->
     document.getElementById(@swfObjectID)
 
   swfCallback: (carrotResponse, fbResponse, callbackId) ->
     swf = @getSwf()
-    if swf
+    if swf && !@isUnity
       swf.teakUiCallback(JSON.stringify({carrotResponse: carrotResponse, fbResponse: fbResponse}), callbackId)
+    else if swf && @isUnity
+      swf.SendMessage("CarrotGameObject", callbackId + "|" + JSON.stringify({carrotResponse: carrotResponse, fbResponse: fbResponse}))
 
   ajaxGet: (url, callback) ->
     if @request
