@@ -210,7 +210,7 @@ class Teak
 
     if postMethod?
       params = {
-        'request_id' : requestId
+        'request_instance_id' : requestId
         'object_properties' : JSON.stringify(opts['object_properties'] || {})
       }
       if opts['object_type'] && opts['object_id']
