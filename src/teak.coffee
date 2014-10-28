@@ -224,7 +224,7 @@ class Teak
 
       @postSignedRequest("/me/request.json", params, (jqXHR) =>
         carrotResponse = $.parseJSON(jqXHR.responseText)
-        fb_data = $.extend({}, opts, carrotResponse.fb_data)
+        carrotResponse.fb_data = $.extend({}, opts, carrotResponse.fb_data)
         @internal_directRequest(carrotResponse, callback, postMethod);
       )
 
