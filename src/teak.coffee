@@ -269,6 +269,9 @@ class Teak
         @uiCallbackHandler(callback, carrotResponse)
 
 
+  reportAdClick: (adId) ->
+    @ajaxPost("#{@scheme}://parsnip.gocarrot.com/ad_click", {creative_id: adId, user_id: @udid});
+
   acceptRequest: (requestId, callback) ->
     @ajaxPost("#{@scheme}://posts.gocarrot.com/requests/#{requestId}/clicks", {clicking_user_id: @udid, sig: "s"},
       (jqXHR) =>
